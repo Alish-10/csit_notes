@@ -1,0 +1,47 @@
+{% extends 'MaterialRecommender/base.html' %}
+{% block title %}Dashboard{% endblock title %}
+
+
+{% block content %}
+<div class="container">
+    <a class="my-2 text-light" href="{% url "dashboard" %}" style="color: blue;">See All Material</a>
+
+{% if allMa %}
+  
+<h5 class="my-3 text-light">Read and Rate Here.... 
+
+{% endif %}
+
+
+<div class="row">
+{% for i in allMa %}
+
+
+<div class="col-md-3 mx-2 my-2">
+        <div class="card" style="width: 18rem;">
+             <img class="card-img-top" src="{{i.image.url}}"  alt="Card image cap">    
+                      <div class="card-body">
+                        <h5 class="card-title text-dark">{{i.title|truncatechars:20}}</h5>
+                        <a href="{% url "material_detail" i.id %}" class="btn btn-outline-primary my-2">Read More</a>
+                        {% if  request.user.is_staff %}
+                          <a href="{% url "material_delete" i.id %}" class="btn btn-outline-danger">Delete</a>
+
+                          {% endif %}
+                      </div>
+          </div>
+        </div>
+        {% empty %}
+        <b>Your search -</b> <b style="color: darkred;">{{query}}</b>- did not match any documents.<br>
+        Suggestions:
+        <br>
+        <ul>
+            <li>Make sure all words are spelled correctly</li>
+            <li>Try other words.</li>
+            <li>Try using simpler words.</li>
+        </ul>
+        
+        {% endfor %}
+
+</div>
+</div>
+ {% endblock %}

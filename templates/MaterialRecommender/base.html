@@ -1,0 +1,215 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css"/>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+    <title>{% block title %}  {% endblock title %}</title>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <script src='https://kit.fontawesome.com/a076d05399.js' crossorigin='anonymous'></script>
+
+    <link rel="stylesheet" href="{% static 'css/main.css' %}" />
+    <style>
+      {% block css %}
+    {% endblock css %}
+  </style>
+    <nav class="navbar navbar-expand-lg navbar-dark " style="font-size: large; font-family: 'Times New Roman', Times, serif;">
+      
+              <div class="container-fluid">
+              <a class="navbar-brand" href="{% url 'studyportal' %}"  style="font-size: 30px;">CSIT Study Portal</a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                  <span class="navbar-toggler-icon"></span>
+                </button>
+              <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+
+                  
+                  {% if  request.user.is_staff %}
+                  <li class="nav-item">
+                    <a class="nav-link" href="admin/">Admin Pannel</a>
+                  </li>
+                      <li class="nav-item">
+                      <a class="nav-link {% block addactive %}{% endblock addactive %}" href="{% url 'addmaterial' %}">Add Material</a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link {% block addmember %}{% endblock addmember %}" href="{% url 'addmember' %}">Add Member</a>
+                    </li>
+              
+                  {% endif %}
+                  {% if not request.user.is_staff %}
+                  <li class="nav-item">
+                    <a class="nav-link {% block contactactive %}{% endblock contactactive %}" href="{% url 'contact' %}">Contact Us</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link {% block aboutactive %}{% endblock aboutactive %}" href="{% url 'about' %}">About Us</a>
+                  </li>
+                  {% endif %}
+                  {% if  request.user.is_authenticated %}
+                  
+                  <li class="nav-item">
+                    <a class="nav-link {% block profileactive %}{% endblock profileactive %}" href="{% url 'profile' %}">Profile</a>
+                  </li>
+                
+                    <li class="nav-item dropdown">
+                      <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
+                        aria-haspopup="true" aria-expanded="false">
+                        Logout
+                      </a>
+                      
+                      <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <a class="dropdown-item" href="{% url 'logout' %}">Bye!Bye!   {{request.user}}</a>
+                        <div class="dropdown-divider"></div>
+                      </div>
+                    </li>
+                  {% endif %}
+                  
+
+                  {% if not request.user.is_authenticated %}
+                  <div class="mr-auto">
+                        <button type="button" class="btn btn-outline-primary" data-toggle="modal" data-target="#signupModal">
+                            Sign Up
+                            </button>
+                          <button type="button" class="btn btn-outline-primary" data-toggle="modal" data-target="#loginModal">
+                            Login
+                            </button>
+                          
+                        </div>
+                  {% endif %}
+                  
+                  
+
+                  
+                  
+                  
+                </ul>
+              </div>
+          </nav>
+
+    <div class="modal fade" id="signupModal" tabindex="-1" role="dialog" aria-labelledby="signupModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="loginModalLabel">Signup Here</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <form method='POST' action='{% url 'signup' %}'>
+                      {% csrf_token %}
+                        <div class="mb-3">
+                          <label for="fname" class="form-label">First Name</label>
+                          <input type="text" class="form-control" id="fname" name='fname' placeholder='Enter Your First Name Here' aria-describedby="fname" Required>
+                        </div>
+
+                        <div class="mb-3">
+                          <label for="lname" class="form-label">Last Name</label>
+                          <input type="text" class="form-control" id="lname" name='lname' placeholder='Enter Your Last Name Here' aria-describedby="lname" Required>
+                        </div>
+
+                    <div class="mb-3">
+                      <label for="username" class="form-label">Username</label>
+                      <input type="text" class="form-control" id="username" name='username' placeholder='Enter Your Unique Username Here' aria-describedby="username" Required>
+                    </div>
+
+
+                    <div class="mb-3">
+                      <label for="email" class="form-label">Email address</label>
+                      <input type="email" class="form-control" id="email" name='email' aria-describedby="email" Required>
+                      <div id="email" class="form-text">We'll never share your email with anyone else.</div>
+                    </div>
+                    <div class="mb-3">
+                      <label for="pass0" class="form-label">Enter Your Password</label>
+                      <input type="password" class="form-control" id="pass0" name='pass0' placeholder='Enter Your Password' Required>
+                    </div>
+
+                    <div class="mb-3">
+                      <label for="pass1" class="form-label">Enter Your Password Again</label>
+                      <input type="password" class="form-control" id="pass1" name='pass1' placeholder='Enter Your Password Again' Required>
+                    </div>
+                    <button type="submit" class="btn btn-outline-primary">Submit</button>
+                  </form>
+              </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+
+
+
+
+
+
+
+
+<div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="loginModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="loginModalLabel">Login Here</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form method='POST' action='{% url 'login' %}'>
+                  {% csrf_token %}
+                    <div class="mb-3">
+                      <label for="username" class="form-label">Username</label>
+                      <input type="text" class="form-control" id="username" name='username' placeholder='Enter Your Unique Username Here' aria-describedby="username" Required>
+                    </div>
+
+                    <div class="mb-3">
+                      <label for="pass2" class="form-label">Password</label>
+                      <input type="password" class="form-control" id="pass2" name='pass2' placeholder='Enter Your Password' Required>
+                    </div>
+                  <button type="submit" class="btn btn-outline-primary">Login</button>
+        </form>
+      </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+  </head>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+    <body style="background:url('https://img.wallpapersafari.com/desktop/1600/900/98/80/wUGhtK.png') fixed; width: 100%;">
+    
+         
+                        {% block content %}
+
+
+
+                        {% endblock content %}
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+  
+  </body>
+
+</html>
+

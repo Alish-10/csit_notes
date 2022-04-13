@@ -1,0 +1,28 @@
+{% extends 'MaterialRecommender/base.html' %} 
+{% load static %} 
+{% block content %}
+
+<section class='text-center container'>
+
+    <div class="container">
+
+        <div class="content-section p-0 mt-5" style="background-color:white">
+
+            <div class="m-3">
+                <h2>{{note.title}}</h2>
+            </div>
+
+            <hr class="p-0 m-0">
+            <hr class="p-0 m-0">
+            <hr class="p-0 m-0">
+            <p class="description m-5 p-5">
+                {{note.description}}
+            </p>
+            <hr>
+        </div>
+
+    </div>
+
+</section>
+
+{% endblock content %}

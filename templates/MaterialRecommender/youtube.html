@@ -1,0 +1,71 @@
+{% extends 'MaterialRecommender/base.html' %} 
+{% load static %} 
+{% block content %}
+{% load crispy_forms_tags %}
+<section class='text-center container text-light'>
+    <h2>Search Videos in Youtube</h2>
+    <p>search videos and select any video to open in youtube</p>
+    <form action="" method="post">
+    {% csrf_token %}
+        {{form|crispy}}
+        <input class="btn btn-danger" type="submit" value="Submit">
+    </form><br>
+    {% for i in results %}
+        <iframe width="900" height="506" src="https://www.youtube.com/embed/{{i.link|slice:"32:"}}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen>
+            
+        </iframe>
+
+    {% endfor %}
+</section>
+
+{% endblock content %}
+
+
+
+
+
+
+
+
+
+
+<!-- <section class='text-center container'>
+    <h2>Search Videos in Youtube</h2>
+    <p>search videos and select any video to open in youtube</p>
+    <form action="" method="post">
+    {% csrf_token %}
+        {{form|crispy}}
+        <input class="btn btn-danger" type="submit" value="Submit">
+    </form><br>
+    {% for i in results %}
+    <a href="{% url 'videolink' i.link %}">  
+
+        <div class="card">
+            <div class="card-header">
+                <div class="row">
+                    <div class="col-md-5">
+                        <img class="img-fluid" src="{{i.thumbnail}}" alt="">
+
+                    </div>
+                    <div class="col-md-7">
+                        <h3 class="p-0 m-0">{{i.title}}</h3>
+                        <b>
+                            <u>
+                                <h5 class="p-0 m-0">{{i.channel}}</h5>
+                            </u>
+                        </b>
+                        <h6 class="p-0 m-1">{{i.description}}</h6>
+                        <b>
+                            <h6 class="ml-0 mt-3">{{i.duration}}</h6>
+                            <h6 class="ml-0 mt-1">{{i.views}}</h6>
+                            <h6 class="ml-0 mt-1">{{i.published}}</h6>
+                        </b>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <iframe width="900" height="506" src="https://www.youtube.com/embed/{{i.link|slice:"32:"}}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        </a>
+    {% endfor %}
+    <br>
+</section> -->

@@ -1,0 +1,333 @@
+{% extends 'MaterialRecommender/base.html' %}
+{% load static %}
+
+{% block css %}
+:root {
+  --surface-color: #fff;
+  --curve: 40;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Noto Sans JP', sans-serif;
+  background-color: #fef8f8;
+}
+
+.cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+  margin: 4rem 5vw;
+  padding: 0;
+  list-style-type: none;
+}
+
+.card {
+  position: relative;
+  display: block;
+  height: 100%;  
+  border-radius: calc(var(--curve) * 1px);
+  overflow: hidden;
+  text-decoration: none;
+}
+
+.card__image {      
+  width: 100%;
+  height: auto;
+}
+
+.card__overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 1;      
+  border-radius: calc(var(--curve) * 1px);    
+  background-color: var(--surface-color);      
+  transform: translateY(100%);
+  transition: .2s ease-in-out;
+}
+
+.card:hover .card__overlay {
+  transform: translateY(0);
+}
+
+.card__header {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 2em;
+  padding: 2em;
+  border-radius: calc(var(--curve) * 1px) 0 0 0;    
+  background-color: var(--surface-color);
+  transform: translateY(-100%);
+  transition: .2s ease-in-out;
+}
+
+.card__arc {
+  width: 80px;
+  height: 80px;
+  position: absolute;
+  bottom: 100%;
+  right: 0;      
+  z-index: 1;
+}
+
+.card__arc path {
+  fill: var(--surface-color);
+  d: path("M 40 80 c 22 0 40 -22 40 -40 v 40 Z");
+}       
+
+.card:hover .card__header {
+  transform: translateY(0);
+}
+
+.card__thumb {
+  flex-shrink: 0;
+  width: 50px;
+  height: 50px;      
+  border-radius: 50%;      
+}
+
+.card__title {
+  font-size: 1em;
+  margin: 0 0 .3em;
+  color: #6A515E;
+}
+
+.card__tagline {
+  display: block;
+  margin: 1em 0;
+  font-family: "MockFlowFont";  
+  font-size: .8em; 
+  color: #D7BDCA;  
+}
+
+.card__status {
+  font-size: .8em;
+  color: #D7BDCA;
+}
+
+.card__description {
+  padding: 0 2em 2em;
+  margin: 0;
+  color: #D7BDCA;
+  font-family: "MockFlowFont";   
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  overflow: hidden;
+
+}  
+
+
+
+.styled-table {
+  border-collapse: collapse;
+  margin: 25px 0;
+  font-size: 0.9em;
+  font-family: sans-serif;
+  min-width: 400px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+}
+
+.styled-table thead tr {
+  background-color: #009879;
+  color: #ffffff;
+  text-align: left;
+}
+
+.styled-table th,
+.styled-table td {
+    padding: 12px 15px;
+}
+
+.styled-table tbody tr {
+  border-bottom: 1px solid #dddddd;
+}
+
+.styled-table tbody tr:nth-of-type(even) {
+  background-color:rgb(39, 25, 31);
+}
+.styled-table tbody tr:nth-of-type(odd) {
+  background-color: rgb(127, 177, 218);
+}
+
+.styled-table tbody tr:last-of-type {
+  border-bottom: 2px solid blue;
+}
+.styled-table tbody tr.active-row {
+  font-weight: bold;
+  color: #009879;
+{% endblock css %}
+
+{% block content %}
+    {% for message in messages  %}
+            <div class="alert alert-{{message.tags}} alert-dismissible fade show my-2" role="alert">
+                <strong>!!</strong> {{message}}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+          {% endfor %}
+      
+          <div class="container">
+            <ul class="cards">
+              <li>
+                {% if  request.user.is_authenticated %}
+                <a href="{% url "dashboard" %}" class="card">
+                  {% else %}
+                  <a href="" class="card">
+                    {% endif %}
+                  <img src="{% static 'images/study2.jpg' %}" class="card__image" alt="" style="height:400px" />
+                  <div class="card__overlay">
+                    <div class="card__header">                   
+                      {% comment %} <img class="card__thumb" src="{% static 'images/study.jpg' %}" alt="" /> {% endcomment %}
+                      <div class="card__header-text">
+                        <h3 class="card__title">Study Material</h3>
+                      </div>
+                    </div>
+                    <p class="card__description">Browse books from a list of neatly organised book menu</p>
+                  </div>
+                </a> 
+                     
+              </li>
+
+
+              
+              {% if not request.user.is_staff %}
+              <li>
+                  {% if  request.user.is_authenticated %}
+                  <a href="{% url "notes" %}" class="card">
+                  {% else %}
+                  <a href="" class="card">
+                    {% endif %}
+                  <img src="{% static 'images/notes.jpg' %}" class="card__image" alt="" style="height:400px" />
+                  <div class="card__overlay">        
+                    <div class="card__header">             
+                      {% comment %} <img class="card__thumb" src="{% static 'images/notes.jpg' %}" alt="" /> {% endcomment %}
+                      <div class="card__header-text">
+                        <h3 class="card__title">Create Notes</h3>
+                      </div>
+                    </div>
+                    <p class="card__description">Create Notes to refer them later. They are stored permanently until deleted</p>
+                  </div>
+                </a>
+              </li>
+            
+            
+              <li>
+                  {% if  request.user.is_authenticated %}
+                  <a href="{% url "youtube" %}" class="card">
+                  {% else %}
+                  <a href="" class="card">
+                    {% endif %}
+                  <img src="{% static 'images/yu.jpg' %}" class="card__image" alt="" style="height:400px" />
+                  <div class="card__overlay">
+                    <div class="card__header">                   
+                      {% comment %} <img class="card__thumb" src="{% static 'images/youtube.jpg' %}" alt="" /> {% endcomment %}
+                      <div class="card__header-text">
+                        <h3 class="card__title">Youtube</h3>
+                      </div>
+                    </div>
+                    <p class="card__description"> Search Youtube and select your desired video to play it on youtube</p>
+                  </div>
+                </a>
+              </li>
+            
+            
+              <li>
+                  {% if  request.user.is_authenticated %}
+                  <a href="{% url "todo" %}" class="card">
+                  {% else %}
+                  <a href="" class="card">
+                    {% endif %}
+                  <img src="{% static 'images/tt.jpg' %}" class="card__image" alt="" style="height:400px" />
+                  <div class="card__overlay">
+                    <div class="card__header">                 
+                      {% comment %} <img class="card__thumb" src="{% static 'images/nots.jpeg' %}" alt="" /> {% endcomment %}
+                      <div class="card__header-text">
+                        <h3 class="card__title">TO DO</h3>
+                      </div>          
+                    </div>
+                    <p class="card__description">Add your to-do lists for your day and remove them as you finish</p>
+                  </div>
+                </a>
+              </li>  
+            
+            
+              <li>
+                  {% if  request.user.is_authenticated %}
+                  <a href="{% url "books" %}" class="card">
+                  {% else %}
+                  <a href="" class="card">
+                    {% endif %}
+                  <img src="{% static 'images/booksss.webp' %}" class="card__image" alt="" style="height:400px"/>
+                  <div class="card__overlay">
+                    <div class="card__header">                    
+                      {% comment %} <img class="card__thumb" src="{% static 'images/books.jpg' %}" alt="" /> {% endcomment %}
+                      <div class="card__header-text">
+                        <h3 class="card__title">Books</h3>
+                      </div>
+                    </div>
+                    <p class="card__description">Browse books from a list of neatly organised book menu</p>
+                  </div>
+                </a>
+              </li>
+
+
+              <li> 
+                  {% if  request.user.is_authenticated %}
+                  <a href="{% url "usefullink" %}" class="card">
+                  {% else %}
+                  <a href="" class="card">
+                    {% endif %}
+                  <img src="{% static 'images/useful.webp' %}" class="card__image" alt=""  style="height:400px" />
+                  <div class="card__overlay">
+                    <div class="card__header">               
+                      {% comment %} <img class="card__thumb" src="{% static 'images/useful.webp' %}" alt="" /> {% endcomment %}
+                      <div class="card__header-text">
+                        <h3 class="card__title">Useful Links</h3>
+                      </div>          
+                    </div>
+                    <p class="card__description">Click here to get useful link or websites........</p>
+                  </div>
+                </a>
+              </li> 
+              
+              
+
+              {% else %}
+              <div>
+                <h4 style="font-style: italic; color: green;">Newly Suggestions From Users..</h4>
+                <table class="styled-table">
+                  <tr class="text-light">
+                    <th>Name</th>
+                    <th>District</th>
+                    <th>Suggestions</th>
+                    <th>Delete</th>
+                  </tr>
+                  {% for c in con|slice:"::-1"|slice:":3" %}
+                  <tr class="active-row">
+                    <td>{{c.fname}} {{c.lname}}</td>
+                    <td>{{c.country}}</td>
+                    <td>{{c.subject|truncatechars:10}}</td>
+                    <td><a href="{% url "delete_suggestion" c.id %}"><i class="fa fa-trash fa-2x"></i></a></td>
+                  </tr>
+                  {% endfor %}
+                </table>
+              </div>
+              {% endif %}
+            </ul>
+            </div>  
+            </ul>
+            </div>
+            
+            {% if request.user.is_staff %}
+            
+                
+                {% endif %}
+
+{% endblock content %}
+

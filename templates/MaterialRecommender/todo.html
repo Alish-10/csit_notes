@@ -1,0 +1,81 @@
+{% extends 'MaterialRecommender/base.html' %} 
+{% load static %}
+{% load crispy_forms_tags %}
+{% block css %}
+
+
+{% endblock css %}
+
+{% block content %}
+<div class="container">
+{% if not todos_done %}
+
+    <table class="table table-striped table-bordered table-hover table-light my-4">
+
+        <thead>
+            <tr class="text-light" style="background-color:black;">
+                <th scope="col">Sno.</th>
+                <th scope="col">Title</th>
+                <th scope="col">Status</th>
+                <th scope="col">Delete</th>
+            </tr>
+        </thead>
+        <tbody style="background-color:black;">
+            {% for i in todos %}
+            <tr>
+                <th scope="row" class="text-light">{{forloop.counter}}</th>
+                <td class="text-light">{{i.title}}</td>
+                <td>
+                    <a href="{% url "update_todo" i.id %}">
+                        <div class="form-check">
+                            {% if  i.is_finished == True %}
+                            <input class="form-check-input" type="checkbox" value="" checked> 
+                            <label class="form-check-label text-light" for="flexCheckDefault">
+                                Completed
+                            </label>
+                            {% else %}
+                            <input class="form-check-input" type="checkbox" value="" >
+                            <label class="form-check-label text-light" for="flexCheckDefault">
+                                Incompleted
+                            </label>
+                            {% endif %}
+                        </div>
+                    </a>
+                </td>
+
+                <td><a href="{% url "delete_todo" i.id %}"><i class="fa fa-trash fa-2x"></i></a></td>
+            </tr>
+            {% endfor %}
+            
+        </tbody>
+    </table>
+    {% else %}
+    <h4 class="text-light">All tasks have been done!! create to add more</h4>
+    {% endif %}
+
+
+
+
+
+</div><br><br>
+
+
+
+
+
+<div class="container">
+    <form method="POST">
+    {% csrf_token %}
+        <fieldset class="form-group text-light">
+            <legend class="border-bottom mb-4">Create Todo</legend>
+            {{form|crispy}}
+        </fieldset>
+        <div class="form-group">
+            <button href="" class="btn btn-outline-info" type="submit">
+                Create
+            </button>
+        </div>
+    </form>
+</div>
+
+{% endblock content %}

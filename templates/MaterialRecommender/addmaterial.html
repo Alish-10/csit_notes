@@ -1,0 +1,33 @@
+{% extends 'MaterialRecommender/base.html' %}
+{% block title %}Add Material{% endblock title %}
+
+
+
+{% block addactive %}active{% endblock addactive %}
+
+
+{% block content %}
+ {% if perms.MaterialRecommender.add_material %}
+<div class="container text-light  mt-2 p-5 mb-2">
+<h1 class="text-center">Add Material</h1>  
+  <form action="" method="post" enctype="multipart/form-data">
+
+
+
+
+        {% csrf_token %}
+        {% for fm in form  %}
+          <span class="font-weight-bold">{{fm.label_tag}}</span>
+          <p>{{form.media}}{{fm}}</p>
+        {% endfor %}
+
+
+
+        <input type="submit" class="btn btn-primary" value="Add">
+        </form><br>
+</form>
+</div>
+{% else %}
+<h1 class="text-light mt-2 ml-2">Only Admin has Permission To Add Material</h1>
+{% endif %}
+{%endblock content%} 

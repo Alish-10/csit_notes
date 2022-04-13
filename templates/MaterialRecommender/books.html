@@ -1,0 +1,75 @@
+{% extends 'MaterialRecommender/base.html' %} 
+{% load static %} 
+{% block content %}
+{% load crispy_forms_tags %}
+
+
+<section class='text-center text-light container'>
+    <h2>Search books and browse your favorite</h2>
+    <p>just enter the search query to obtain the results</p><b></b>
+    <form action="" method="post">
+    {% csrf_token %}
+    {{form|crispy}}
+        <input class="btn btn-danger" type="submit" value="Submit">
+    </form><br>
+
+
+
+
+{% for i in results %}
+
+    <a href="{{i.preview}}" target="_blank"">
+        <div class="card my-2" style="background-color: black;">
+            <div class="card-header">
+                <div class="row">
+                    <div class="col-md-3">
+                        <img class="img-fluid" src="{{i.thumbnail}}" alt="">
+
+                    </div>
+                    <div class="col-md-9">
+                        <h3 class="p-0 m-0 text-light">{{i.title}}</h3>
+                        <b>
+                            <u>
+                                <h5 class="p-0 m-0 text-light">{{i.subtitle}}</h5>
+                            </u>
+                        </b>
+                        {% if i.description %}
+                        <h6 class="p-0 m-1 text-light">description</h6>
+                        {% endif %}
+                        
+                        <b> 
+
+
+                        {% if i.categories %}
+                        
+                            <h6 class="ml-0 mt-3 text-light">Category: 
+                            {% for category in i.categories  %}
+                                {{category}}
+                            {% endfor %}
+                            </h6>
+
+
+                            {% if i.count %}
+                            <h6 class="ml-0 mt-1 text-light">Pages:{{i.count}}</h6>
+                            {% endif %}
+                            
+
+                            {% if i.rating %}
+                            <h6 class="ml-0 mt-1 text-light">Rating: {{i.rating}}</h6>
+                            {% endif %}
+                            
+                        {% endif %}
+
+
+
+                        </b>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </a>
+    {% endfor %}
+    <br>
+</section>
+
+{% endblock content %}

@@ -1,0 +1,51 @@
+{% extends 'MaterialRecommender/base.html' %} 
+{% load static %} 
+
+{% load crispy_forms_tags %}
+{% block content %}
+
+
+
+
+<div class="container text-black" style="background-color: black;">
+    <div class="row col-md-12 container">
+        <div class="col-md-8">
+            <section>
+                <div class="content-section p-0 mt-5">
+
+                    {% for fm in fm %}
+                    <div>
+                        <h2 class='text-center'><b>{{fm.title}}</b></h2>
+                        <div class='text-center'><b>Category: {{fm.categorise}}</b></div>
+                    </div>
+                    <hr>
+                    <div class="media"><div class="meta">
+                    <div class="text mx-2 "><p style="text-align:justify" class="mx-3 text-light">{{fm.content|safe}}</p>
+                    <hr>
+                    <section class='text-center container mx-2'>
+                    <p ><img style="height:300px; width:450px" src="{{fm.image.url}}"></p>
+                    </section>
+                    <hr>
+                    <a href="{% url "dashboard" %}" class="my-2" style="color: blue;">Click here to go back for all material</a>
+                    {% endfor %}
+                </div>
+            </section>
+        </div>
+        <div class="col-md-4 content-section mt-5">
+            <form method="POST">
+                {% csrf_token %}
+                    <fieldset class="form-group">
+                        <legend class="border-bottom mb-4">Create Notes</legend>
+                    </fieldset>
+                    {{form|crispy}}
+                    <div class="form-group">
+                        <button class="btn btn-outline-info my-4" type="submit">
+                            Create
+                        </button>
+                    </div>
+                </form>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}

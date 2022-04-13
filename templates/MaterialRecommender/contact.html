@@ -1,0 +1,92 @@
+{% extends 'MaterialRecommender/base.html' %}
+
+
+
+{% block css %}
+
+    body {font-family: Arial, Helvetica, sans-serif;}
+* {box-sizing: border-box;}
+
+input[type=text], select, textarea {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+  margin-top: 6px;
+  margin-bottom: 16px;
+  resize: vertical;
+}
+
+input[type=submit] {
+  background-color: #04AA6D;
+  color: white;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+input[type=submit]:hover {
+  background-color: #45a049;
+}
+
+.container {
+  border-radius: 5px;
+  padding: 20px;
+}
+    .mydivstyle:hover {
+        box-shadow: 0 0 20px 0 rgba(0,0,0,3);
+        /* transform : translate Y(-20px); */
+    }
+ {% endblock css %}
+ {% block contactactive %}active{% endblock contactactive %}
+{% block content %}
+
+<div class="container" style="margin: top 50px;">
+    <h1 class="text-center text-light">Contact Us</h1>
+     <form action="{% url "contact" %}" method="POST">
+     {% csrf_token %}
+                <label for="fname" class="text-light">First Name</label>
+                <input type="text" id="fname" name="fname" placeholder="Your name.." required>
+
+                <label for="lname" class="text-light">Last Name</label>
+                <input type="text" id="lname" name="lname" placeholder="Your last name.." required>
+
+                <label for="country" class="text-light">District</label>
+                <select id="country" name="country" required>
+                <option value="Nepalgunj">Nepalgunj</option>
+                <option value="Pokhara">Pokhara</option>
+                <option value="Kathmandu">Kathmandu</option>
+                <option value="Jhapa">Jhapa</option>
+                <option value="Kailali">Kailali</option>
+                </select>
+
+                <label for="subject" class="text-light">Subject</label>
+                <textarea id="subject" name="subject" placeholder="Write something.." style="height:200px" required></textarea>
+
+                <input type="submit" value="Submit">
+            </form>
+            <hr>
+            <hr>
+        <div class="row my-3">
+           
+          <div class="col-lg-3 col-sm-6 mydivstyle">
+            <h4><i class="fas fa-phone-square text-light" >  Contact</i></h4>
+            <p class="text-light mt-2 font-weight-bold"><a class="text-light"  href="tel:+9779815648745">+9779815648745</a></p>
+          </div>
+          <div class="col-lg-3 col-sm-6 mydivstyle">
+           <h4><i class="fas fa-envelope-square text-light">  Send Email</i></h4>
+           <p class="text-danger mt-2 font-weight-bold"><a class="text-light" href="mailto:basanttimilsaina8@gmail.com">basanttimilsaina8@gmail.com</a></p>
+          </div>
+          <div class="col-lg-3 col-sm-6 mydivstyle">
+            <h4><i class="fas fa-address-card text-light">  Office Address</i></h4>
+            <p class="text-danger mt-2 font-weight-bold"><a class="text-light" href="https://www.google.com/maps/place/Basant+Timilsaina/@28.6113234,81.1615978,14.08z/data=!4m5!3m4!1s0x0:0x56f28f86e114dee5!8m2!3d28.6174397!4d81.1500156">Lamki, Kailali</a></p>
+          </div>
+          <div class="col-lg-3 col-sm-6 mydivstyle">
+            <h4><i class="fas fa-clock text-light">  Office Time</i></h4>
+            <p class="text-primary mt-2 font-weight-bold text-light">10AM to 5PM</p>
+          </div>
+        </div>
+      </div>
+{% endblock content %}
